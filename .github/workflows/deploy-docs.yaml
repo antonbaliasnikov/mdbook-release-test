@@ -3,6 +3,9 @@ name: Deploy docs to GH pages
 on:
   push:
     branches: ["main"]
+    tags:
+      - "*.*.*"
+      - "v*.*.*"
     paths:
       - 'docs/**'
       - '.github/workflows/deploy-docs.yaml'
@@ -37,5 +40,5 @@ jobs:
     uses: matter-labs/era-compiler-ci/.github/workflows/deploy-mdbook.yaml@aba-deploy-mdbooks-common
     secrets: inherit
     with:
-      version: ${{ inputs.version || 'latest' }}
+      version: ${{ inputs.version || github.ref_name }}
       docs-dir: ${{ inputs.docs-dir || 'docs' }}
