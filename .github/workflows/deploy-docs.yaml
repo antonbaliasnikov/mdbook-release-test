@@ -1,4 +1,6 @@
-name: Deploy docs to GH pages
+# REQUIRES CONFIGURATION OF DEPLOYMENT PROTECTION RULES
+
+name: Deploy docs
 
 on:
   push:
@@ -22,12 +24,6 @@ on:
         required: false
         default: "docs"
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
@@ -37,8 +33,16 @@ concurrency:
 jobs:
 
   deploy-docs:
-    uses: matter-labs/era-compiler-ci/.github/workflows/deploy-mdbook.yaml@aba-deploy-mdbooks-common
-    secrets: inherit
-    with:
-      version: ${{ inputs.version || github.ref_name }}
-      docs-dir: ${{ inputs.docs-dir || 'docs' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy mdbooks
+        uses: matter-labs/era-compiler-ci/.github/actions/deploy-mdbooks@aba-deploy-mdbooks-common
+        with:
+          version: ${{ inputs.version || github.ref_name }}
+          docs-dir: ${{ inputs.docs-dir || 'docs' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -7,3 +7,5 @@ Test second deployment.
 Some update.
 
 Some release update
+
+Add new feature
