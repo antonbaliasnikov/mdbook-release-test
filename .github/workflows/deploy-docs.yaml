@@ -1,0 +1,41 @@
+name: Deploy docs to GH pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yaml'
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: "Version of the documentation to deploy"
+        required: false
+        default: "latest"
+      docs-dir:
+        type: string
+        description: "Directory with the documentation"
+        required: false
+        default: "docs"
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+
+  deploy-docs:
+    uses: matter-labs/era-compiler-ci/.github/workflows/deploy-mdbook.yaml@aba-deploy-mdbooks-common
+    secrets: inherit
+    with:
+      version: ${{ inputs.version || 'latest' }}
+      docs-dir: ${{ inputs.docs-dir || 'docs' }}
