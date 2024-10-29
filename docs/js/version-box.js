@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Get the base URL from the mdBook configuration
-    const baseUrl = document.location.origin; // Get the current hostname
+    const baseUrl = document.location.pathname.split('/').slice(0, -2).join('/');
 
     // Function to create version selector
     function createVersionSelector(versions) {
         const versionSelector = document.createElement("select");
         versionSelector.id = "version-selector";
+
+        // Get the current path
+        const currentPath = window.location.pathname;
 
         // Iterate over the versions object
         for (const [versionName, versionUrl] of Object.entries(versions)) {
@@ -14,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             option.textContent = versionName;
 
             // Check if the current URL matches this option's value
-            if (window.location.pathname === versionUrl) {
+            if (currentPath === option.value + '/') {
                 option.selected = true; // Set this option as selected
             }
 
@@ -32,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Fetch versions from JSON file
-    fetch('versions.json')
+    fetch(baseUrl + '/versions.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
