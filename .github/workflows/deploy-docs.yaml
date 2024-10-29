@@ -41,8 +41,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy mdbooks
-        uses: matter-labs/era-compiler-ci/.github/actions/deploy-mdbooks@aba-deploy-mdbooks-common
+        uses: matter-labs/deploy-mdbooks@aba-multi-project-support
         with:
           version: ${{ inputs.version || github.ref_name }}
           docs-dir: ${{ inputs.docs-dir || 'docs' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          project: "core"

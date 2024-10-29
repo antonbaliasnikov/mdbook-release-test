@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Test book"
+
+[output.html]
+additional-js = ["js/version-box.js"]
+additional-css = ["css/version-box.css"]
