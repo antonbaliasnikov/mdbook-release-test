@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Get the base URL from the mdBook configuration
-    const baseUrl = document.location.pathname.split('/').slice(0, -2).join('/');
+    const baseUrl = document.location.origin + '/zksync-era/core/';
 
     // Function to create version selector
     function createVersionSelector(versions) {
@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", function() {
         // Iterate over the versions object
         for (const [versionName, versionUrl] of Object.entries(versions)) {
             const option = document.createElement("option");
-            option.value = baseUrl + versionUrl; // Prepend base URL
+            option.value = baseUrl + versionUrl + '/'; // Prepend base URL
             option.textContent = versionName;
 
             // Check if the current URL matches this option's value
-            if (currentPath === option.value + '/') {
+            if (currentPath === option.value) {
                 option.selected = true; // Set this option as selected
             }
 
